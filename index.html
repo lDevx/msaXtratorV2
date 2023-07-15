@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log XT-Rator</title>
+    <link rel="stylesheet" href="loadingScreen.css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+      integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body>
+    <form>
+      <input
+        type="file"
+        id="zipFileForum"
+        accept=".zip"
+        onchange="extractZipFile(event)"
+      />
+    </form>
+
+    <div id="loading-screen">
+      <div id="loading-spinner"></div>
+      <div id="loading-text">Loading...</div>
+    </div>
+
+    <div class="container">
+      <div class="left-section">
+        <h3>Delimiters</h3>
+        <ul id="delimiterList" class="delimiter-list"></ul>
+      </div>
+
+      <div class="right-section">
+        <h3>Data Blocks</h3>
+        <div id="dataBlocks"></div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

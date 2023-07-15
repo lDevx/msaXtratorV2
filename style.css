@@ -1,0 +1,165 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-section {
+  flex: 0 0 25%;
+  overflow: auto;
+  padding: 10px;
+  background-color: #f2f2f2;
+  font-size: 20px;
+}
+
+.right-section {
+  font-size: 17px;
+  flex: 1;
+  padding: 10px;
+  background-color: #fff;
+  overflow-y: auto;
+  overflow-x: scroll;
+}
+
+.delimiter-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.delimiter-list li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.delimiter-list li:hover {
+  color: blue;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  padding: 0;
+  margin: 0;
+  line-height: 1.4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-section {
+  flex: 0 0 25%;
+  overflow: auto;
+  padding: 10px;
+  background-color: #f2f2f2;
+  font-size: 20px;
+}
+
+.right-section {
+  font-size: 17px;
+  flex: 1;
+  padding: 10px;
+  background-color: #fff;
+  overflow-y: auto;
+  overflow-x: scroll;
+}
+
+.delimiter-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.delimiter-list li {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.delimiter-list li:hover {
+  color: blue;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  padding: 0;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.progress{
+  text-align: center;
+}
+.header{
+  display: flex;
+  justify-content: space-around
+}
+.txt-button {
+  background-color: #ff6b6b;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.txt-button:hover {
+  background-color: #ff4f4f;
+}
+
+.logs-button {
+  background-color: #00b894;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+.logs-button:hover {
+  background-color: #00a383;
+}
+
+#downloadContainer{
+  padding: 10px;
+  width: 30%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}

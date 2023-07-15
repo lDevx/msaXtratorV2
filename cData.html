@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Text File Splitter</title>
+   
+  </head>
+  <body>
+    <input type="file" id="fileInput" onchange="splitTextFile()" />
+
+    <div class="container">
+      <div class="left-section">
+        <h3>Delimiters</h3>
+        <ul id="delimiterList" class="delimiter-list"></ul>
+      </div>
+
+      <div class="right-section">
+        <h3>Data Blocks</h3>
+        <div id="dataBlocks"></div>
+      </div>
+    </div>
+
+    <div id="loader" style="display: none">Loading...</div>
+
+    <script>
+      function splitTextFile() {
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        const loader = document.getElementById("loader");
+        const delimiterList = document.getElementById("delimiterList");
+        const dataBlocks = document.getElementById("dataBlocks");
+
+        if (file) {
+          const reader = new FileReader();
+
+          reader.onloadstart = function () {
+            loader.style.display = "block";
+          };
+
+          reader.onload = function (event) {
+            const textData = event.target.result;
+            const blocks = splitTextIntoBlocks(textData);
+
+            // Display delimiters on the left side
+            for (const block of blocks) {
+              const delimiter = block.split("\n")[0];
+              const listItem = document.createElement("li");
+              listItem.textContent = delimiter;
+              listItem.onclick = function () {
+                showDataBlock(block);
+              };
+              delimiterList.appendChild(listItem);
+            }
+
+            // Show the first data block by default
+            if (blocks.length > 0) {
+              showDataBlock(blocks[0]);
+            }
+
+            loader.style.display = "none";
+          };
+
+          reader.readAsText(file);
+        }
+      }
+
+      function splitTextIntoBlocks(text) {
+        const blocks = [];
+        const lines = text.split("\n");
+        let currentBlock = "";
+
+        for (const line of lines) {
+          if (line.startsWith("# show")) {
+            if (currentBlock !== "") {
+              blocks.push(currentBlock);
+            }
+            currentBlock = line;
+          } else {
+            currentBlock += "\n" + line;
+          }
+        }
+
+        if (currentBlock !== "") {
+          blocks.push(currentBlock);
+        }
+
+        return blocks;
+      }
+
+      function showDataBlock(block) {
+        const dataBlocks = document.getElementById("dataBlocks");
+        dataBlocks.innerHTML = "";
+        const pre = document.createElement("pre");
+        pre.textContent = block;
+        dataBlocks.appendChild(pre);
+      }
+    </script>
+  </body>
+</html>
