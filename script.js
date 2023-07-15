@@ -2,6 +2,11 @@
 const systemName =
   '<PROPERTY name="product-id" type="string">([^<]+)</PROPERTY>';
 //Enter the RegEx values in this section||||||||||||||||||||||
+const newAnalysis = document.getElementById("newAnalysis");
+
+newAnalysis.addEventListener("click", () => {
+  location.reload(true); // hard reload the page
+});
 
 function showLoadingScreen() {
   document.getElementById("loading-screen").style.display = "flex";
@@ -10,8 +15,12 @@ function showLoadingScreen() {
 function hideLoadingScreen() {
   document.getElementById("loading-screen").style.display = "none";
 }
-function hideForum() {
-  document.getElementById("zipFileForum").style.display = "none";
+function hideWelcomeScreen() {
+  document.getElementById("welcomeScreen").style.display = "none";
+}
+function showContainers() {
+  document.getElementById("container").style.display = "flex";
+  document.getElementById("navbar").style.display = "flex";
 }
 
 async function extractZipFile(event) {
@@ -39,7 +48,8 @@ async function extractZipFile(event) {
       Promise.all(filePromises).then(function (dataArray) {
         processTheLogFile(dataArray);
         hideLoadingScreen();
-        hideForum();
+        hideWelcomeScreen();
+        showContainers();
       });
     };
 
@@ -50,11 +60,47 @@ async function extractZipFile(event) {
 function processTheLogFile(dataArray) {
   // Process the log file data
   const arrayLength = dataArray.length;
-  console.log(" Array length :" + arrayLength);
-  dataArray.forEach((item) => {
-    const { fileName, content } = item;
+  console.log("Array length: " + arrayLength);
+
+  if (arrayLength > 1) {
+    // Prepare the options for the user to select
+    const options = dataArray.map((item, index) => {
+      const { fileName } = item;
+      return `${index + 1}. ${fileName}`;
+    });
+
+    let selectedIndex;
+    while (true) {
+      // Ask the user to select an option
+      const promptMessage = `There are multiple .logs files. Please select the file you want to analyze:\n${options.join(
+        "\n"
+      )}`;
+      const userInput = prompt(promptMessage);
+      selectedIndex = parseInt(userInput, 10);
+
+      // Validate the selected index
+      if (
+        !isNaN(selectedIndex) &&
+        selectedIndex >= 1 &&
+        selectedIndex <= arrayLength
+      ) {
+        break; // Valid option selected, exit the loop
+      }
+
+      console.log("Invalid option selected. Please try again.");
+    }
+
+    // Get the selected item based on the index
+    const selectedItem = dataArray[selectedIndex - 1];
+    const { fileName, content } = selectedItem;
     startProcess(fileName, content);
-  });
+  } else if (arrayLength === 1) {
+    // Process the single item in dataArray
+    const { fileName, content } = dataArray[0];
+    startProcess(fileName, content);
+  } else {
+    console.log("No items in dataArray.");
+  }
 }
 
 // ****************************************
@@ -84,7 +130,7 @@ function startProcess(fileName, logsContent) {
     "logs-button"
   );
   //Download button for the CData section.
-  addDownloadButton(cData, `${nameOfSystem}-Data`, "txt", "txt-button");
+  // addDownloadButton(cData, `${nameOfSystem}-Data`, "txt", "txt-button");
   handleCdata(cData);
 }
 //This function will return the data based on the regex provided
@@ -133,14 +179,20 @@ function addDownloadButton(data, label, extention, className) {
   const blob = new Blob([data], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
 
+  // 6666666666666666
+
+  //     <button class="navbar-button" id="button2">
+  //       <span class="material-symbols-outlined"> code_off </span>.Logs
+  //     </button>
+  // 6666666666666666
   const downloadButton = document.createElement("button");
   const spanElement = document.createElement("span");
   spanElement.className = "material-symbols-outlined";
-  spanElement.textContent = "download";
+  spanElement.textContent = "code_off";
   downloadButton.textContent = `.${extention}`;
   downloadButton.prepend(spanElement);
 
-  downloadButton.classList.add(className);
+  downloadButton.classList.add("navbar-button");
   downloadButton.addEventListener("click", () => {
     const link = document.createElement("a");
     link.href = url;
@@ -150,7 +202,7 @@ function addDownloadButton(data, label, extention, className) {
     URL.revokeObjectURL(url);
   });
 
-  const container = document.getElementById("downloadContainer");
+  const container = document.getElementById("navbar");
   container.appendChild(downloadButton);
 }
 function handleCdata(data) {

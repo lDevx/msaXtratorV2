@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Log XT-Rator</title>
     <link rel="stylesheet" href="loadingScreen.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
       integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg=="
@@ -13,28 +22,42 @@
     ></script>
   </head>
   <body>
-    <form>
-      <input
-        type="file"
-        id="zipFileForum"
-        accept=".zip"
-        onchange="extractZipFile(event)"
-      />
-    </form>
+    <div id="welcomeScreen">
+      <h2>Welcome the MSA XT-Rator</h2>
+      <form>
+        <label for="zipFileForum" class="file-upload-label">
+          <span class="material-icons-outlined" style="color: #47fa1a"
+            >file_upload</span
+          >
+          Select Log
+        </label>
+        <input
+          type="file"
+          id="zipFileForum"
+          accept=".zip"
+          onchange="extractZipFile(event)"
+        />
+      </form>
+    </div>
+    <div class="navbar" id="navbar">
+      <button class="navbar-button" id="newAnalysis">
+        <span class="material-symbols-outlined"> restart_alt </span> New
+      </button>
+    </div>
 
     <div id="loading-screen">
       <div id="loading-spinner"></div>
       <div id="loading-text">Loading...</div>
     </div>
-    <div id="downloadContainer"></div>
-    <div class="container">
+
+    <div class="container" id="container">
       <div class="left-section">
-        <h3>Delimiters</h3>
+        <h3>Commands</h3>
         <ul id="delimiterList" class="delimiter-list"></ul>
       </div>
 
       <div class="right-section">
-        <h3>Data Blocks</h3>
+        <h3>Outputs</h3>
         <div id="dataBlocks"></div>
       </div>
     </div>
