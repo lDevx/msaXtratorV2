@@ -240,21 +240,25 @@ function handleCdata(data) {
   const delimiterList = document.getElementById("delimiterList");
   const dataBlocks = document.getElementById("dataBlocks");
 
-  const blocks = splitTextIntoBlocks(data);
+  try {
+    const blocks = splitTextIntoBlocks(data);
 
-  // Display delimiters on the left side
-  for (const block of blocks) {
-    const delimiter = block.split("\n")[0];
-    const listItem = document.createElement("li");
-    listItem.textContent = delimiter;
-    listItem.onclick = function () {
-      showDataBlock(block);
-    };
-    delimiterList.appendChild(listItem);
-  }
+    // Display delimiters on the left side
+    for (const block of blocks) {
+      const delimiter = block.split("\n")[0];
+      const listItem = document.createElement("li");
+      listItem.textContent = delimiter;
+      listItem.onclick = function () {
+        showDataBlock(block);
+      };
+      delimiterList.appendChild(listItem);
+    }
 
-  // Show the first data block by default
-  if (blocks.length > 0) {
-    showDataBlock(blocks[0]);
+    // Show the first data block by default
+    if (blocks.length > 0) {
+      showDataBlock(blocks[0]);
+    }
+  } catch (error) {
+    console.error("An error occurred while processing the data:", error);
   }
 }
