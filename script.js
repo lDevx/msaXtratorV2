@@ -1,3 +1,8 @@
+//Enter the RegEx values in this section||||||||||||||||||||||
+const systemName =
+  '<PROPERTY name="product-id" type="string">([^<]+)</PROPERTY>';
+//Enter the RegEx values in this section||||||||||||||||||||||
+
 function showLoadingScreen() {
   document.getElementById("loading-screen").style.display = "flex";
 }
@@ -44,39 +49,17 @@ async function extractZipFile(event) {
 
 function processTheLogFile(dataArray) {
   // Process the log file data
-  console.log(dataArray);
-  startProcess();
+  const arrayLength = dataArray.length;
+  console.log(" Array length :" + arrayLength);
+  dataArray.forEach((item) => {
+    const { fileName, content } = item;
+    startProcess(fileName, content);
+  });
 }
 
-function startProcess() {
-  const nameOfSystem = extractData(systemName);
-  console.log(systemName);
-  const { xmlData, cData } = splitFileIntoSections(logsContent);
-  console.log("XML Data:", xmlData);
-  console.log("C Data:", cData);
-  addDownloadButton(
-    fixOriginalLogFile(logsContent),
-    nameOfSystem,
-    "logs",
-    "logs-button"
-  );
-  addDownloadButton(cData, `${nameOfSystem}-Data`, "txt", "txt-button");
-
-  handleCdata(cData);
-}
 // ****************************************
 // OLD JS code
-let logsContent;
-let cData;
-
-//Enter the RegEx values in this section||||||||||||||||||||||
-const systemName =
-  '<PROPERTY name="product-id" type="string">([^<]+)</PROPERTY>';
-//Enter the RegEx values in this section||||||||||||||||||||||
-
-//This function will return the data based on the regex provided
-// EG:  '<PROPERTY name="product-id" type="string">([^<]+)</PROPERTY>';
-function extractData(string) {
+function extractData(string, logsContent) {
   const regex = new RegExp(string);
   const match = logsContent.match(regex);
 
@@ -88,6 +71,24 @@ function extractData(string) {
   console.log("No matching data found.");
   return null;
 }
+
+function startProcess(fileName, logsContent) {
+  const nameOfSystem = extractData(systemName, logsContent);
+  console.log(nameOfSystem);
+  const { xmlData, cData } = splitFileIntoSections(logsContent);
+  //Download button for the fixed .log file
+  addDownloadButton(
+    fixOriginalLogFile(logsContent),
+    nameOfSystem,
+    "logs",
+    "logs-button"
+  );
+  //Download button for the CData section.
+  addDownloadButton(cData, `${nameOfSystem}-Data`, "txt", "txt-button");
+  handleCdata(cData);
+}
+//This function will return the data based on the regex provided
+// EG:  '<PROPERTY name="product-id" type="string">([^<]+)</PROPERTY>';
 //The function below helps us the split the log data into 2 sections, XML and cData.
 function splitFileIntoSections(fileContents) {
   const splitIndex = fileContents.indexOf("<LOG_CONTENT>");
@@ -95,14 +96,11 @@ function splitFileIntoSections(fileContents) {
   if (splitIndex !== -1) {
     const xmlData = fileContents.substring(0, splitIndex);
     const cData = fileContents.substring(splitIndex);
-    // Continue with further processing or actions for each section
-
-    return { xmlData, cData }; // Return the sections if needed for further use
+    return { xmlData, cData }; // Return the sections if needed for further use/ XML data wont be used for now
   } else {
     console.log("Split point not found in the file.");
     const xmlData = fileContents;
     const cData = null; // Set cData to null since the split point is not found
-
     return { xmlData, cData };
   }
 }
