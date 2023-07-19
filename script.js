@@ -179,12 +179,11 @@ function addDownloadButton(data, label, extention, className) {
   const blob = new Blob([data], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
 
-  // 6666666666666666
 
   //     <button class="navbar-button" id="button2">
   //       <span class="material-symbols-outlined"> code_off </span>.Logs
   //     </button>
-  // 6666666666666666
+  
   const downloadButton = document.createElement("button");
   const spanElement = document.createElement("span");
   spanElement.className = "material-symbols-outlined";
@@ -242,7 +241,7 @@ function handleCdata(data) {
 
   try {
     const blocks = splitTextIntoBlocks(data);
-
+let delimiter;
     // Display delimiters on the left side
     for (const block of blocks) {
       const delimiter = block.split("\n")[0];
@@ -254,9 +253,9 @@ function handleCdata(data) {
       delimiterList.appendChild(listItem);
     }
 
-    // Show the first data block by default
-    if (blocks.length > 0) {
-      showDataBlock(blocks[0]);
+    // Check if the current block starts with "show system" and display it
+    if (delimiter.startsWith("# show system")) {
+      showDataBlock(block);
     }
   } catch (error) {
     console.error("An error occurred while processing the data:", error);
