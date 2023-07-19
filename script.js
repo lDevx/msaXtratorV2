@@ -241,8 +241,9 @@ function handleCdata(data) {
 
   try {
     const blocks = splitTextIntoBlocks(data);
-let delimiter;
-    // Display delimiters on the left side
+    let showSystemBlock;
+
+    // Display delimiters on the left side and find the block with "# show system"
     for (const block of blocks) {
       const delimiter = block.split("\n")[0];
       const listItem = document.createElement("li");
@@ -251,11 +252,15 @@ let delimiter;
         showDataBlock(block);
       };
       delimiterList.appendChild(listItem);
+
+      if (delimiter.trim() === "# show system") {
+        showSystemBlock = block;
+      }
     }
 
-    // Check if the current block starts with "show system" and display it
-    if (delimiter.startsWith("# show system")) {
-      showDataBlock(block);
+    // Show the block that exactly matches "# show system"
+    if (showSystemBlock) {
+      showDataBlock(showSystemBlock);
     }
   } catch (error) {
     console.error("An error occurred while processing the data:", error);
